@@ -4,7 +4,7 @@ namespace DataAcceseLayer.Entities.Enums;
 
 public enum EmploymentType
 {
-    FullTime,
+    FullTime = 1,
     PartTime,
     Freelance,
     Contract,

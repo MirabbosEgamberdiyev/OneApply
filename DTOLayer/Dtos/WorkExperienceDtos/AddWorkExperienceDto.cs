@@ -27,5 +27,5 @@ public class AddWorkExperienceDto
 
     [Required(ErrorMessage = "UserId is required")]
 
-    public string UserId { get; set; }
+    public string UserId { get; set; } = string.Empty;
 }

@@ -85,7 +85,6 @@ public class SkillController(ISkillService skillService) : ControllerBase
 
     [HttpDelete]
     [Route("deleteSkill")]
-
     public async Task<IActionResult> DeleteSkill(int id)
     {
         try

@@ -7,31 +7,49 @@ using DataAcceseLayer.Entities.Resumes;
 using DataAcceseLayer.Entities;
 using DataAcceseLayer.Interfaces;
 using DTOLayer.Dtos.CertificateDtos;
+using Microsoft.AspNetCore.Identity;
 
 namespace BusinessLogicLayer.Services;
 
-public class CertificateService(IUnitOfWork unitOfWork, IMapper mapper) : ICertificateService
+public class CertificateService(IUnitOfWork unitOfWork,
+                                IMapper mapper,
+                                UserManager<User> userManager) : ICertificateService
 {
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IMapper _mapper = mapper;
+    private readonly UserManager<User> _userManager = userManager;
 
     #region Certificate qo'shish 
     public async Task AddAsync(AddCertificateDto entity)
     {
        
         if (entity is null)
-            throw new ArgumentNullException("Certificate is null");
+            throw new ArgumentNullException("CertificateDto is null");
 
         var certificate = _mapper.Map<Certificate>(entity);
+        if(certificate is null)
+        {
+            throw new CustomException("Certificate is null");
+        }
+        var existingUser = await _userManager.FindByIdAsync(entity.UserId);
+        if (existingUser != null)
+        {
+
+            certificate.UserId = existingUser.Id;
+        }
+        else
+        {
+            throw new CustomException("UserId is not found");
+        }
 
         var certificates = await _unitOfWork.CertificateInterface.GetAllAsync();
 
         if (certificate.IsExistCertificate(certificates))
             throw new CustomException($"{certificate.Name} is already exist");
-        if (certificate.IsValidCertificate()){
+        if (!certificate.IsValidCertificate()){
             throw new CustomException("Invalid Certificate");
         }
-
+        certificate.User = null;
         await _unitOfWork.CertificateInterface.AddAsync(certificate);
         await _unitOfWork.SaveAsync();
     }
@@ -69,19 +87,35 @@ public class CertificateService(IUnitOfWork unitOfWork, IMapper mapper) : ICerti
     #region Certificateni Update qilish
     public async Task UpdateAsync(UpdateCertificateDto entity)
     {
+
         if (entity is null)
-            throw new ArgumentNullException(nameof(entity), "Certificate is null");
+            throw new ArgumentNullException("CertificateDto is null");
 
         var certificate = _mapper.Map<Certificate>(entity);
+        if (certificate is null)
+        {
+            throw new CustomException("Certificate is null");
+        }
+        var existingUser = await _userManager.FindByIdAsync(entity.UserId);
+        if (existingUser != null)
+        {
 
-        if (!certificate.IsValidCertificate())
-            throw new CustomException("Certificate is invalid");
+            certificate.UserId = existingUser.Id;
+        }
+        else
+        {
+            throw new CustomException("UserId is not found");
+        }
 
         var certificates = await _unitOfWork.CertificateInterface.GetAllAsync();
 
         if (certificate.IsExistCertificate(certificates))
             throw new CustomException($"{certificate.Name} is already exist");
-
+        if (!certificate.IsValidCertificate())
+        {
+            throw new CustomException("Invalid Certificate");
+        }
+        certificate.User = null;
         await _unitOfWork.CertificateInterface.UpdateAsync(certificate);
         await _unitOfWork.SaveAsync();
     }

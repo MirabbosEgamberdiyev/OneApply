@@ -12,8 +12,8 @@ public class Link:BaseEntity
     public LinkType  Type { get; set; }
 
     [ForeignKey(nameof(Url)), Column("UserId")]
-    public string  UserId { get; set; }
+    public string UserId { get; set; } = string.Empty;
 
-    public User User { get; set; }
+    public User User { get; set; } = new User();
 
 }

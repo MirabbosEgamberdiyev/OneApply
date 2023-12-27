@@ -7,13 +7,17 @@ using DataAcceseLayer.Entities;
 using DataAcceseLayer.Entities.Resumes;
 using DataAcceseLayer.Interfaces;
 using DTOLayer.Dtos.ProjectDtos;
+using Microsoft.AspNetCore.Identity;
 
 namespace BusinessLogicLayer.Services;
 
-public class ProjectService(IUnitOfWork unitOfWork, IMapper mapper) : IProjectService
+public class ProjectService(IUnitOfWork unitOfWork,
+                            IMapper mapper ,
+                            UserManager<User> userManager) : IProjectService
 {
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IMapper _mapper = mapper;
+    private readonly UserManager<User> _userManager = userManager;
 
     #region Project qo'shish
     public async Task AddAsync(AddProjectDto dto)
@@ -24,6 +28,23 @@ public class ProjectService(IUnitOfWork unitOfWork, IMapper mapper) : IProjectSe
             throw new ArgumentNullException("Project is null here");
         }
         var project = _mapper.Map<Project>(dto);
+        if(project is null)
+        {
+            throw new ArgumentNullException("Mapped Project is null");
+
+        }
+        if (string.IsNullOrEmpty(dto.UserId))
+        {
+            throw new ArgumentNullException("UserId is required");
+        }
+        var existingUser = await _userManager.FindByIdAsync(dto.UserId);
+
+        if (existingUser != null)
+        {
+
+            project.UserId = existingUser.Id;
+        }
+
         if (!project.IsValid())
         {
             throw new CustomException("Invalid project");
@@ -37,16 +58,17 @@ public class ProjectService(IUnitOfWork unitOfWork, IMapper mapper) : IProjectSe
         {
             throw new CustomException("Project is null here");
         }
-        if (!project.IsExist(projects))
+        if (project.IsExist(projects))
         {
             throw new CustomException($"{project.Name} is already exist");
         }
+        project.User = null;
         await _unitOfWork.ProjectInterface.AddAsync(project);
         await _unitOfWork.SaveAsync();
     }
     #endregion
 
-    #region Project o'chirish tugadi
+    #region Project o'chirish 
     public async Task DeleteAsync(int id)
     {
         var project = await _unitOfWork.ProjectInterface.GetByIdAsync(id);
@@ -91,6 +113,23 @@ public class ProjectService(IUnitOfWork unitOfWork, IMapper mapper) : IProjectSe
             throw new ArgumentNullException("Project is null here");
         }
         var project = _mapper.Map<Project>(dto);
+        if (project is null)
+        {
+            throw new ArgumentNullException("Mapped Project is null");
+
+        }
+        if (string.IsNullOrEmpty(dto.UserId))
+        {
+            throw new ArgumentNullException("UserId is required");
+        }
+        var existingUser = await _userManager.FindByIdAsync(dto.UserId);
+
+        if (existingUser != null)
+        {
+
+            project.UserId = existingUser.Id;
+        }
+
         if (!project.IsValid())
         {
             throw new CustomException("Invalid project");
@@ -108,6 +147,7 @@ public class ProjectService(IUnitOfWork unitOfWork, IMapper mapper) : IProjectSe
         {
             throw new CustomException($"{project.Name} is already exist");
         }
+        project.User = null;
         await _unitOfWork.ProjectInterface.UpdateAsync(project);
         await _unitOfWork.SaveAsync();
 

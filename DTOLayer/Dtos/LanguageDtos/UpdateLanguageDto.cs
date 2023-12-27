@@ -16,5 +16,5 @@ public class UpdateLanguageDto:BaseDto
     public LanguageType Level { get; set; }
 
     [Required(ErrorMessage = "UserId is required")]
-    public string UserId { get; set; }
+    public string UserId { get; set; } =string.Empty;
 }

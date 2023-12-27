@@ -6,7 +6,7 @@ namespace DataAcceseLayer.Entities.Enums;
 
 public enum LanguageType
 {
-    A1,
+    A1 = 1,
     A2,
     B1,
     B2,

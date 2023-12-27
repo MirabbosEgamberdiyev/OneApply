@@ -2,16 +2,21 @@
 using AutoMapper;
 using BusinessLogicLayer.Extended;
 using BusinessLogicLayer.Interfaces;
+using DataAcceseLayer.Entities;
 using DataAcceseLayer.Entities.Resumes;
 using DataAcceseLayer.Interfaces;
 using DTOLayer.Dtos.EducationDtos;
+using Microsoft.AspNetCore.Identity;
 
 namespace BusinessLogicLayer.Services;
 
-public class EducationService(IUnitOfWork unitOfWork, IMapper mapper) : IEducationService
+public class EducationService( IUnitOfWork unitOfWork,
+                               IMapper mapper,
+                               UserManager<User> userManager) : IEducationService
 {
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IMapper _mapper = mapper;
+    private readonly UserManager<User> _userManager = userManager;
 
     #region Education qo'shish
     public async Task AddAsync(AddEducationDto dto)
@@ -21,6 +26,27 @@ public class EducationService(IUnitOfWork unitOfWork, IMapper mapper) : IEducati
             throw new ArgumentNullException("Education is null here");
         }
         var education = _mapper.Map<Education>(dto);
+        if(education is null)
+        {
+            throw new ArgumentNullException("Mapped Education is null");
+        }
+        if (string.IsNullOrEmpty(dto.UserId))
+        {
+            throw new ArgumentNullException("UserId is required");
+        }
+
+        var existingUser = await _userManager.FindByIdAsync(dto.UserId);
+
+        if (existingUser != null)
+        {
+
+            education.UserId = existingUser.Id;
+        }
+        else
+        {
+            throw new CustomException("UserId is not found");
+        }
+
         if (!education.IsValid())
         {
             throw new CustomException("Invalid education");
@@ -34,10 +60,11 @@ public class EducationService(IUnitOfWork unitOfWork, IMapper mapper) : IEducati
         {
             throw new CustomException("Education is null here");
         }
-        if (!education.IsExist(educations))
+        if (education.IsExist(educations))
         {
             throw new CustomException($"{education.Name} is already exist");
         }
+        education.User = null;
         await _unitOfWork.EducationInterface.AddAsync(education);
         await _unitOfWork.SaveAsync();
     }
@@ -51,7 +78,7 @@ public class EducationService(IUnitOfWork unitOfWork, IMapper mapper) : IEducati
         {
             throw new ArgumentNullException("Education is null here");
         }
-        await _unitOfWork.EducationInterface.AddAsync(education);
+        await _unitOfWork.EducationInterface.DeleteAsync(education);
         await _unitOfWork.SaveAsync();
     }
     #endregion
@@ -88,6 +115,27 @@ public class EducationService(IUnitOfWork unitOfWork, IMapper mapper) : IEducati
             throw new ArgumentNullException("Education is null here");
         }
         var education = _mapper.Map<Education>(dto);
+        if (education is null)
+        {
+            throw new ArgumentNullException("Mapped Education is null");
+        }
+        if (string.IsNullOrEmpty(dto.UserId))
+        {
+            throw new ArgumentNullException("UserId is required");
+        }
+
+        var existingUser = await _userManager.FindByIdAsync(dto.UserId);
+
+        if (existingUser != null)
+        {
+
+            education.UserId = existingUser.Id;
+        }
+        else
+        {
+            throw new CustomException("UserId is not found");
+        }
+
         if (!education.IsValid())
         {
             throw new CustomException("Invalid education");
@@ -101,10 +149,11 @@ public class EducationService(IUnitOfWork unitOfWork, IMapper mapper) : IEducati
         {
             throw new CustomException("Education is null here");
         }
-        if (!education.IsExist(educations))
+        if (education.IsExist(educations))
         {
             throw new CustomException($"{education.Name} is already exist");
         }
+        education.User = null;
         await _unitOfWork.EducationInterface.UpdateAsync(education);
         await _unitOfWork.SaveAsync();
     }

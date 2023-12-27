@@ -53,9 +53,9 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
     }
 
 
-    public async Task UpdateAsync(TEntity entity)
+    public Task UpdateAsync(TEntity entity)
     {
         _dbSet.Update(entity);
-        await _dbContext.SaveChangesAsync();
+        return Task.CompletedTask;
     }
 }

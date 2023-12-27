@@ -21,15 +21,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Add DB
-//builder.Services.AddDbContext<ApplicationDbContext>(options =>
-//{
-//    var connectionString = builder.Configuration.GetConnectionString("local");
-//    options.UseSqlServer(connectionString);
-//});
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
         options.UseNpgsql(builder.Configuration.GetConnectionString("OneApplyDbWithIdentity")));
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 #region Add Identity
 builder.Services

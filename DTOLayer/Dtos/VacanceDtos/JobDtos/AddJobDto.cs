@@ -34,5 +34,4 @@ public class AddJobDto
     [Required(ErrorMessage = "UserId is required")]
     public string UserId { get; set; }
 
-    public ICollection<ApplyDto> ApplyDtos { get; set; } = new List<ApplyDto>();
 }

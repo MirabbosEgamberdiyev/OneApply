@@ -57,7 +57,7 @@ public class CertificateController(ICertificateService certificateService) : Con
         }
         catch (CustomException ex)
         {
-            return BadRequest(ex.Message);
+            return BadRequest(ex.ErrorMessage);
         }
         catch (Exception ex)
         {
@@ -79,7 +79,7 @@ public class CertificateController(ICertificateService certificateService) : Con
         }
         catch (CustomException ex)
         {
-            return BadRequest(ex.Message);
+            return BadRequest(ex.ErrorMessage);
         }
         catch (Exception ex)
         {

@@ -57,7 +57,7 @@ public class EducationController(IEducationService educationService) : Controlle
         }
         catch (CustomException ex)
         {
-            return BadRequest(ex.Message);
+            return BadRequest(ex.ErrorMessage);
         }
         catch (Exception ex)
         {

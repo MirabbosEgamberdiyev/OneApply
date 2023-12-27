@@ -69,7 +69,7 @@ public class ProjectController(IProjectService projectService) : ControllerBase
         }
         catch (CustomException ex)
         {
-            return BadRequest(ex.Message);
+            return BadRequest(ex.ErrorMessage);
         }
         catch (Exception)
         { 
@@ -94,7 +94,7 @@ public class ProjectController(IProjectService projectService) : ControllerBase
         }
         catch (CustomException ex)
         {
-            return BadRequest(ex.Message);
+            return BadRequest(ex.ErrorMessage);
         }
         catch (Exception ex)
         {

@@ -14,7 +14,7 @@ public class Project:BaseEntity
     public string Description { get; set; } = string.Empty;
 
     [MinLength(3), MaxLength(1000)]
-    public string Url = string.Empty;
+    public string Url { get; set; } = string.Empty;
 
     [ForeignKey(nameof(User)), Column("UserId")]
     public string UserId { get; set; } = string.Empty;

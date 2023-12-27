@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DTOLayer.Dtos.VacanceDtos.JobDtos;
 
-public class UpdateJobDto
+public class UpdateJobDto:BaseDto
 {
     [Required(ErrorMessage = "Title is required")]
     [StringLength(500, ErrorMessage = "Title length must be between 3 and 500 characters", MinimumLength = 3)]
@@ -30,7 +30,5 @@ public class UpdateJobDto
     public string Description { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "UserId is required")]
-    public string UserId { get; set; }
-
-    public ICollection<ApplyDto> ApplyDtos { get; set; } = new List<ApplyDto>();
+    public string UserId { get; set; } = string.Empty;
 }

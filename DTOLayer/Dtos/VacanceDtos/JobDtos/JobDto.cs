@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DTOLayer.Dtos.VacanceDtos.JobDtos;
 
-public class JobDto
+public class JobDto:BaseDto
 {
     [Required(ErrorMessage = "Title is required")]
     [StringLength(500, ErrorMessage = "Title length must be between 3 and 500 characters", MinimumLength = 3)]

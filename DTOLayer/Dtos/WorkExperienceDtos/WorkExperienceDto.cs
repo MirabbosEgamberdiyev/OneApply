@@ -24,6 +24,7 @@ public class WorkExperienceDto:BaseDto
     [Required(ErrorMessage = "Description is required")]
     [StringLength(2000, ErrorMessage = "Description length must be between 3 and 2000 characters", MinimumLength = 3)]
     public string Description { get; set; } = string.Empty;
+  
     [Required(ErrorMessage = "UserId is required")]
-    public string UserId { get; set; }
+    public string UserId { get; set; } = string.Empty;
 }

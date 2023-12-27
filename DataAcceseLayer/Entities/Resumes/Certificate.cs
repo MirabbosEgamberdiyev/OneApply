@@ -11,7 +11,7 @@ namespace DataAcceseLayer.Entities.Resumes
         [Required, MinLength(3), MaxLength(555)]
         public string Url { get; set; } = string.Empty;
 
-        public User User { get; set; }
+        public User User { get; set; } = new User();
 
         [ForeignKey(nameof(User)), Column("UserId")]
         public string UserId { get; set; } = string.Empty;

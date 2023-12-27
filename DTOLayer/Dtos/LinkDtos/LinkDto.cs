@@ -13,5 +13,5 @@ public class LinkDto:BaseDto
 
     public LinkType Type { get; set; }
     [Required(ErrorMessage = "UserID is required")]
-    public string UserId { get; set; }
+    public string UserId { get; set; } =string.Empty;
 }

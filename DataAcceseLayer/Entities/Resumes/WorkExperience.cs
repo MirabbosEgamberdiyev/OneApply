@@ -21,7 +21,7 @@ public class WorkExperience:BaseEntity
     public string Description { get; set; } = string.Empty;
 
     [ForeignKey(nameof(User)), Column("UserId")]
-    public string UserId { get; set; }
+    public string UserId { get; set; } = string.Empty;
 
     public User User { get; set; } = new User();
 }

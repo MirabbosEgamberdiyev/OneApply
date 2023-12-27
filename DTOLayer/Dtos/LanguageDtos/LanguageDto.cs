@@ -1,10 +1,11 @@
 ﻿
 using DataAcceseLayer.Entities.Enums;
+using DTOLayer.Dtos;
 using System.ComponentModel.DataAnnotations;
 
 namespace DTOAccessLayer.Dtos.LanguageDtos;
 
-public class LanguageDto
+public class LanguageDto:BaseDto
 {
     [Required(ErrorMessage = "Name is required")]
     [StringLength(255, ErrorMessage = "Name length must be between 2 and 255 characters", MinimumLength = 2)]
@@ -14,5 +15,5 @@ public class LanguageDto
     public LanguageType Level { get; set; }
 
     [Required(ErrorMessage = "UserId is required")]
-    public string UserId { get; set; }
+    public string UserId { get; set; } =string.Empty;
 }
