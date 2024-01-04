@@ -1,7 +1,6 @@
 ﻿
 using BusinessLogicLayer.Extended;
 using BusinessLogicLayer.Interfaces;
-using BusinessLogicLayer.Roles;
 using DTOLayer.Dtos.CertificateDtos;
 using Microsoft.AspNetCore.Mvc;
 

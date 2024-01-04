@@ -12,12 +12,17 @@ using DTOLayer.Dtos.WorkExperienceDtos;
 using DataAcceseLayer.Entities.Vacancies;
 using DTOLayer.Dtos.VacanceDtos.ApplyDtos;
 using DTOLayer.Dtos.VacanceDtos.JobDtos;
+using DataAcceseLayer.Entities;
+using DTOLayer.Dtos.ApplicationUserDtos;
 
 namespace DTOLayer.Mapper;
 public class AutoMapperProfile : Profile
 {
     public AutoMapperProfile()
     {
+        CreateMap<User, UserDto>().ReverseMap();
+
+
         // Add Certificate 1
         CreateMap<Certificate, CertificateDto>().ReverseMap();
         CreateMap<AddCertificateDto, Certificate>();

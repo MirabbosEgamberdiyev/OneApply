@@ -1,8 +1,8 @@
 ﻿
 
 using BusinessLogicLayer.Interfaces;
-using BusinessLogicLayer.Roles;
 using DataAcceseLayer.Entities;
+using DTOLayer;
 using DTOLayer.Dtos.ApplicationUserDtos;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -24,7 +24,7 @@ public class AuthService(UserManager<User> userManager,
     #region Login qilish uchun 
     public async Task<AuthServiceResponseDto> LoginAsync(LoginDto loginDto)
     {
-        var user = await _userManager.FindByNameAsync(loginDto.UserName);
+        var user = await _userManager.FindByNameAsync(loginDto.PhoneNumber);
 
         if (user is null)
             return new AuthServiceResponseDto()
@@ -115,7 +115,7 @@ public class AuthService(UserManager<User> userManager,
     #region Register qilish uchun
     public async Task<AuthServiceResponseDto> RegisterAsync(RegisterDto registerDto)
     {
-        var isExistsUser = await _userManager.FindByNameAsync(registerDto.UserName);
+        var isExistsUser = await _userManager.FindByNameAsync(registerDto.PhoneNumber);
 
         if (isExistsUser != null)
             return new AuthServiceResponseDto()
@@ -130,7 +130,7 @@ public class AuthService(UserManager<User> userManager,
             FirstName = registerDto.FirstName,
             LastName = registerDto.LastName,
             Email = registerDto.Email,
-            UserName = registerDto.UserName,
+            PhoneNumber = registerDto.PhoneNumber,
             SecurityStamp = Guid.NewGuid().ToString(),
         };
 

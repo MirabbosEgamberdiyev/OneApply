@@ -100,6 +100,9 @@ builder.Services.AddTransient<IWorkExperienceService, WorkExperienceService>();
 
 builder.Services.AddTransient<ILinkInterface, LinkRepository>();
 builder.Services.AddTransient<ILinkService, LinkService>();
+
+builder.Services.AddTransient<IUserInterface, UserRepository>();
+builder.Services.AddTransient<IUserService, UserService>();
 #endregion
 
 #region Add AutoMapper
@@ -116,34 +119,34 @@ builder.Services.AddEndpointsApiExplorer();
 
 #region Swaggerni sozlash
 
-//builder.Services.AddSwaggerGen(options =>
-//{
-//    options.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
-//    {
-//        Name = "Authorization",
-//        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
-//        Description = "Please enter your token with this format: ''Bearer YOUR_TOKEN''",
-//        Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey,
-//        BearerFormat = "JWT",
-//        Scheme = "bearer"
-//    });
-//    options.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
-//    {
-//        {
-//            new OpenApiSecurityScheme
-//            {
-//                Name = "Bearer",
-//                In = ParameterLocation.Header,
-//                Reference = new OpenApiReference
-//                {
-//                    Id = "Bearer",
-//                    Type = ReferenceType.SecurityScheme
-//                }
-//            },
-//            new List<string>()
-//        }
-//    });
-//});
+builder.Services.AddSwaggerGen(options =>
+{
+    options.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+        Description = "Please enter your token with this format: ''Bearer YOUR_TOKEN''",
+        Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey,
+        BearerFormat = "JWT",
+        Scheme = "bearer"
+    });
+    options.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Name = "Bearer",
+                In = ParameterLocation.Header,
+                Reference = new OpenApiReference
+                {
+                    Id = "Bearer",
+                    Type = ReferenceType.SecurityScheme
+                }
+            },
+            new List<string>()
+        }
+    });
+});
 #endregion
 
 
