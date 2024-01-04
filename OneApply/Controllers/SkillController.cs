@@ -1,12 +1,16 @@
 ﻿using BusinessLogicLayer.Extended;
 using BusinessLogicLayer.Interfaces;
+using DTOLayer;
 using DTOLayer.Dtos.SkillDtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace OneApply.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize(Roles = StaticUserRoles.Worker)]
+[Authorize(Roles = StaticUserRoles.ADMIN)]
 public class SkillController(ISkillService skillService) : ControllerBase
 {
     private readonly ISkillService _skillService = skillService;

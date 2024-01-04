@@ -1,4 +1,5 @@
-﻿using DTOAccessLayer.Dtos.LanguageDtos;
+﻿using DataAcceseLayer.Entities.Vacancies;
+using DTOAccessLayer.Dtos.LanguageDtos;
 using DTOLayer.Dtos.CertificateDtos;
 using DTOLayer.Dtos.EducationDtos;
 using DTOLayer.Dtos.LinkDtos;
@@ -38,4 +39,7 @@ public class UserDto
     public ICollection<ProjectDto> ProjectDtos { get; set; } = new List<ProjectDto>();
     public ICollection<SkillDto> SkillDtos { get; set; } = new List<SkillDto>();
     public ICollection<WorkExperienceDto> WorkExperienceDtos { get; set; } = new List<WorkExperienceDto>();
+
+    public ICollection<Apply> Applies { get; set; } = new List<Apply>();
+    public ICollection<Job> Jobs { get; set; } = new List<Job>();
 }

@@ -6,6 +6,8 @@ namespace DataAcceseLayer.Interfaces;
 
 public interface IUserInterface
 {
+    Task<IEnumerable<User>> GetAllAsync();
+
     Task<IEnumerable<User>> GetCertificateAsync();
     Task<IEnumerable<User>> GetEducationAsync();
 
@@ -19,4 +21,6 @@ public interface IUserInterface
     Task<IEnumerable<User>> GetApplyAsync();
 
     Task<IEnumerable<User>> GetWorkExperience();
+
+    Task AddUser(User user);
 }

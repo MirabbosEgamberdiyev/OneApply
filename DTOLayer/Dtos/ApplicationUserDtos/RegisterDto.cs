@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace DTOLayer.Dtos.ApplicationUserDtos
 {
@@ -11,18 +10,16 @@ namespace DTOLayer.Dtos.ApplicationUserDtos
         [Required(ErrorMessage = "LastName is required")]
         public string LastName { get; set; } = string.Empty;
 
-        //[Required(ErrorMessage = "UserName is required")]
-        //public string UserName { get; set; } = string.Empty;
-
         [Required(ErrorMessage = "Email is required")]
         public string Email { get; set; } = string.Empty;
 
-        // Uncomment the following line if you want to include PhoneNumber
         public string PhoneNumber { get; set; } = string.Empty;
-
-        public StaticUserRoles Roles { get; set; }
 
         [Required(ErrorMessage = "Password is required")]
         public string Password { get; set; } = string.Empty;
+
+        // Change the type to string
+        [Required(ErrorMessage = "Roles is required")]
+        public UserRoles Roles { get; set; }
     }
 }

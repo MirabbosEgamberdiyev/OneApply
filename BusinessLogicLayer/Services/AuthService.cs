@@ -46,7 +46,7 @@ public class AuthService(UserManager<User> userManager,
 
         var authClaims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.MobilePhone, user.PhoneNumber),
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
                 new Claim("JWTID", Guid.NewGuid().ToString()),
                 new Claim("FirstName", user.FirstName),
@@ -115,22 +115,24 @@ public class AuthService(UserManager<User> userManager,
     #region Register qilish uchun
     public async Task<AuthServiceResponseDto> RegisterAsync(RegisterDto registerDto)
     {
-        var isExistsUser = await _userManager.FindByNameAsync(registerDto.PhoneNumber);
+        var existingUser = await _userManager.FindByNameAsync(registerDto.PhoneNumber);
 
-        if (isExistsUser != null)
-            return new AuthServiceResponseDto()
+        if (existingUser != null)
+        {
+            return new AuthServiceResponseDto
             {
                 IsSucceed = false,
-                Message = "UserName Already Exists"
+                Message = "Phone number already exists."
             };
+        }
 
-
-        User newUser = new User()
+        var newUser = new User
         {
             FirstName = registerDto.FirstName,
             LastName = registerDto.LastName,
             Email = registerDto.Email,
             PhoneNumber = registerDto.PhoneNumber,
+            UserName = registerDto.PhoneNumber, // Set UserName explicitly
             SecurityStamp = Guid.NewGuid().ToString(),
         };
 
@@ -138,27 +140,38 @@ public class AuthService(UserManager<User> userManager,
 
         if (!createUserResult.Succeeded)
         {
-            var errorString = "User Creation Failed Beacause: ";
-            foreach (var error in createUserResult.Errors)
-            {
-                errorString += " # " + error.Description;
-            }
-            return new AuthServiceResponseDto()
+            var errorString = "PhoneNumber creation failed because: " + string.Join(" ", createUserResult.Errors.Select(e => e.Description));
+
+            return new AuthServiceResponseDto
             {
                 IsSucceed = false,
                 Message = errorString
             };
         }
 
-        // Add a Default USER Role to all users
-        await _userManager.AddToRoleAsync(newUser, StaticUserRoles.Worker);
 
-        return new AuthServiceResponseDto()
+        if (Enum.TryParse(registerDto.Roles.ToString(), true, out UserRoles userRole))
+        {
+            // Add roles based on the parsed enum value
+            await _userManager.AddToRoleAsync(newUser, userRole.ToString());
+        }
+        else
+        {
+            return new AuthServiceResponseDto
+            {
+                IsSucceed = false,
+                Message = $"Invalid role: {registerDto.Roles}"
+            };
+        }
+
+
+        return new AuthServiceResponseDto
         {
             IsSucceed = true,
-            Message = "User Created Successfully"
+            Message = "User created successfully."
         };
     }
+
     #endregion
 
     #region Role anisqlash
@@ -175,9 +188,21 @@ public class AuthService(UserManager<User> userManager,
                 Message = "Roles Seeding is Already Done"
             };
 
-        await _roleManager.CreateAsync(new IdentityRole(StaticUserRoles.Worker));
-        await _roleManager.CreateAsync(new IdentityRole(StaticUserRoles.OWNER));
-        await _roleManager.CreateAsync(new IdentityRole(StaticUserRoles.ADMIN));
+        // Create roles if they do not exist
+        if (!isAdminRoleExists)
+        {
+            await _roleManager.CreateAsync(new IdentityRole(StaticUserRoles.ADMIN));
+        }
+
+        if (!isEmployerRoleExists)
+        {
+            await _roleManager.CreateAsync(new IdentityRole(StaticUserRoles.OWNER));
+        }
+
+        if (!isWorkerRoleExists)
+        {
+            await _roleManager.CreateAsync(new IdentityRole(StaticUserRoles.Worker));
+        }
 
         return new AuthServiceResponseDto()
         {
@@ -185,6 +210,7 @@ public class AuthService(UserManager<User> userManager,
             Message = "Role Seeding Done Successfully"
         };
     }
+
     #endregion
 
     #region Token Generatsiya qilib olish

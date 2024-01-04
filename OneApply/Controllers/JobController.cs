@@ -11,6 +11,7 @@ namespace OneApply.Controllers;
 [Route("api/[controller]")]
 [ApiController]
 [Authorize(Roles = StaticUserRoles.OWNER)]
+[Authorize(Roles = StaticUserRoles.ADMIN)]
 public class JobController(IJobService jobService) : ControllerBase
 {
     private readonly IJobService _jobService = jobService;

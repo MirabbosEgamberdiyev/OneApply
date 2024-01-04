@@ -1,6 +1,8 @@
 ﻿using BusinessLogicLayer.Extended;
 using BusinessLogicLayer.Interfaces;
+using DTOLayer;
 using DTOLayer.Dtos.ProjectDtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +11,8 @@ namespace OneApply.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize(Roles = StaticUserRoles.Worker)]
+[Authorize(Roles = StaticUserRoles.ADMIN)]
 public class ProjectController(IProjectService projectService) : ControllerBase
 {
     private readonly IProjectService _projectService = projectService;

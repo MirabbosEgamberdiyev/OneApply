@@ -1,13 +1,16 @@
 ﻿
 using BusinessLogicLayer.Extended;
 using BusinessLogicLayer.Interfaces;
+using DTOLayer;
 using DTOLayer.Dtos.CertificateDtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace OneApply.Controllers;
 [Route("api/[controller]")]
 [ApiController]
-//[Authorize(Roles = StaticUserRoles.OWNER)]
+[Authorize(Roles = StaticUserRoles.Worker)]
+[Authorize(Roles = StaticUserRoles.ADMIN)]
 public class CertificateController(ICertificateService certificateService) : ControllerBase
 {
     private readonly ICertificateService _certificateService = certificateService;

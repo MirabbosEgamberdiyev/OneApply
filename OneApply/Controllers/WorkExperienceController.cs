@@ -1,6 +1,8 @@
 ﻿using BusinessLogicLayer.Extended;
 using BusinessLogicLayer.Interfaces;
+using DTOLayer;
 using DTOLayer.Dtos.WorkExperienceDtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -10,6 +12,8 @@ namespace OneApply.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    //[Authorize(Roles = StaticUserRoles.Worker)]
+    //[Authorize(Roles = StaticUserRoles.ADMIN)]
     public class WorkExperienceController(IWorkExperienceService workExperienceService) : ControllerBase
     {
         private readonly IWorkExperienceService _workExperienceService = workExperienceService;

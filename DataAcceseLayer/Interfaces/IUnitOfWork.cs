@@ -19,6 +19,7 @@ public interface IUnitOfWork : IDisposable
     IApplyInterface ApplyInterface { get; }
 
     IJobInterface JobInterface { get; }
+    IUserInterface UserInterface { get; }
 
     Task SaveAsync();
 }

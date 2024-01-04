@@ -10,7 +10,8 @@ namespace OneApply.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize(Roles = StaticUserRoles.Worker)]
+//[Authorize(Roles = StaticUserRoles.OWNER)]
+//[Authorize(Roles = StaticUserRoles.ADMIN)]
 public class ApplyController(IApplyService applyService) : ControllerBase
 {
     private readonly IApplyService _applyService = applyService;

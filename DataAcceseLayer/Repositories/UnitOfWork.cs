@@ -13,7 +13,8 @@ public class UnitOfWork(ApplicationDbContext dbContext,
                         ILinkInterface linkInterface,
                         IWorkExperienceInterface workExperienceInterface,
                         IApplyInterface applyInterface,
-                        IJobInterface jobInterface) : IUnitOfWork
+                        IJobInterface jobInterface,
+                        IUserInterface userInterface) : IUnitOfWork
 {
     private readonly ApplicationDbContext _dbContext = dbContext;
 
@@ -34,6 +35,8 @@ public class UnitOfWork(ApplicationDbContext dbContext,
     public IApplyInterface ApplyInterface { get; } = applyInterface;
 
     public IJobInterface JobInterface { get; } = jobInterface;
+
+    public IUserInterface UserInterface { get; } = userInterface;
 
     public void Dispose()
      => GC.SuppressFinalize(this);

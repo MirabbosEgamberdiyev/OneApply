@@ -7,6 +7,9 @@ namespace BusinessLogicLayer.Interfaces;
 
 public interface IUserService
 {
+    Task AddUser(AddUserDto userDto);
+
+    Task<List<UserDto>> GetAllAsync();
     Task<List<UserDto>> GetCertificateAsync();
     Task<List<UserDto>> GetEducationAsync();
 

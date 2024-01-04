@@ -3,7 +3,7 @@
 namespace DTOLayer;
 
 
-public  class StaticUserRoles
+public class StaticUserRoles
 {
     //Ish beruvchi
     public const string OWNER = "OWNER";
@@ -13,8 +13,6 @@ public  class StaticUserRoles
 
     //ISh izlayotgan va Resume tayorlaydigan odam 
     public const string Worker = "Worker";
-    //OWNER = 1,
-    //ADMIN,
-    //Worker
 
 }
+
