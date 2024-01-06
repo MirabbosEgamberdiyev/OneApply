@@ -77,7 +77,7 @@ public class AuthService(UserManager<User> userManager,
     #region Ish beruvchini yaratish
     public async Task<AuthServiceResponseDto> MakeEmployerAsync(UpdatePermissionDto updatePermissionDto)
     {
-        var user = await _userManager.FindByNameAsync(updatePermissionDto.UserName);
+        var user = await _userManager.FindByNameAsync(updatePermissionDto.PhoneNumber);
 
         if (user is null)
             return new AuthServiceResponseDto()
@@ -99,7 +99,7 @@ public class AuthService(UserManager<User> userManager,
     #region Admin Yaratish uchun 
     public async Task<AuthServiceResponseDto> MakeAdminAsync(UpdatePermissionDto updatePermissionDto)
     {
-        var user = await _userManager.FindByNameAsync(updatePermissionDto.UserName);
+        var user = await _userManager.FindByNameAsync(updatePermissionDto.PhoneNumber);
 
         if (user is null)
             return new AuthServiceResponseDto()

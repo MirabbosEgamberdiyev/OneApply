@@ -7,6 +7,8 @@ namespace BusinessLogicLayer.Interfaces;
 public interface IJobService
 {
     Task<PagedList<JobDto>> Filter(FilterParametrs parametrs);
+    Task<PagedList<JobDto>> GetAllPaged(int pageSize, int pageNumber);
+
 
     Task<List<JobDto>> GetAllAsync();
     Task<JobDto> GetByIdAsync(int id);

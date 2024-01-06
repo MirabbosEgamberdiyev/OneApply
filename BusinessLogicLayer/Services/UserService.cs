@@ -4,7 +4,6 @@ using AutoMapper;
 using BusinessLogicLayer.Extended;
 using BusinessLogicLayer.Interfaces;
 using DataAcceseLayer.Entities;
-using DataAcceseLayer.Entities.Resumes;
 using DataAcceseLayer.Interfaces;
 using DTOLayer.Dtos.ApplicationUserDtos;
 using Microsoft.AspNetCore.Identity;
@@ -70,13 +69,11 @@ public class UserService(IUnitOfWork unitOfWork, IMapper mapper, UserManager<Use
         var languages = await _unitOfWork.UserInterface.GetLanguageAsync();
         return languages.Select(l => _mapper.Map<UserDto>(l)).ToList();
     }
-
     public async Task<List<UserDto>> GetLinkAsync()
     {
         var links = await _unitOfWork.UserInterface.GetLinkAsync();
         return links.Select(l => _mapper.Map<UserDto>(l)).ToList();
     }
-
     public async Task<List<UserDto>> GetProjectAsync()
     {
         var projects = await _unitOfWork.UserInterface.GetProjectAsync();
@@ -88,7 +85,6 @@ public class UserService(IUnitOfWork unitOfWork, IMapper mapper, UserManager<Use
         var skills = await _unitOfWork.UserInterface.GetSkillAsync();
         return skills.Select(s => _mapper.Map<UserDto>(s)).ToList();
     }
-
     public async Task<List<UserDto>> GetWorkExperience()
     {
         var WorkExperience = await _unitOfWork.UserInterface.GetWorkExperience();

@@ -185,4 +185,12 @@ public class JobService(IUnitOfWork unitOfWork,
 
         return pagedList.ToPagedList(dtos, parametrs.PageSize, parametrs.PageNumber);
     }
+
+    public async Task<PagedList<JobDto>> GetAllPaged(int pageSize, int pageNumber)
+    {
+        var jobs = await GetAllAsync();
+        PagedList<JobDto> pagedList = new(jobs, jobs.Count, pageNumber, pageSize);
+
+        return pagedList.ToPagedList(jobs, pageSize, pageNumber);
+    }
 }

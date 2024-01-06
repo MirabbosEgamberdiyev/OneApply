@@ -10,8 +10,8 @@ namespace OneApply.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize(Roles = StaticUserRoles.OWNER)]
-[Authorize(Roles = StaticUserRoles.ADMIN)]
+//[Authorize(Roles = StaticUserRoles.OWNER)]
+//[Authorize(Roles = StaticUserRoles.ADMIN)]
 public class JobController(IJobService jobService) : ControllerBase
 {
     private readonly IJobService _jobService = jobService;
@@ -112,7 +112,6 @@ public class JobController(IJobService jobService) : ControllerBase
     }
     #endregion
 
-
     #region Delete Job
     [HttpDelete("deleteJob/{id}")]
     public async Task<IActionResult> DeleteAsync(int id)
@@ -133,7 +132,7 @@ public class JobController(IJobService jobService) : ControllerBase
     }
     #endregion
 
-
+    #region Filterlash uchun
     [HttpGet("filter")]
     public async Task<IActionResult> Filter([FromQuery] FilterParametrs parametrs)
     {
@@ -148,4 +147,21 @@ public class JobController(IJobService jobService) : ControllerBase
         }
       
     }
+    #endregion
+
+    #region Joblarni pagelaga bo'lish uchun
+    [HttpGet("get-page")]
+    public async Task<IActionResult> GetAllPaged(int pageSize = 10, int pageNumber = 1)
+    {
+        try
+        {
+            var jobs = await _jobService.GetAllPaged(pageSize, pageNumber);
+            return Ok(jobs);
+        }
+        catch (CustomException)
+        {
+            return BadRequest( " Bunday page yo'q  ");
+        }
+    }
+    #endregion
 }
