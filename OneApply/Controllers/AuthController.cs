@@ -1,5 +1,5 @@
-﻿using BusinessLogicLayer.Interfaces;
-using DataAcceseLayer.Entities;
+﻿using BusinessLogicLayer.Extended;
+using BusinessLogicLayer.Interfaces;
 using DTOLayer.Dtos.ApplicationUserDtos;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,19 +16,23 @@ public class AuthController : ControllerBase
     }
 
     // Route For Seeding my roles to DB
-    [HttpPost]
-    [Route("seed-roles")]
-    public async Task<IActionResult> SeedRoles()
-    {
-        var seerRoles = await _authService.SeedRolesAsync();
+    ////[HttpPost]
+    ////[Route("seed-roles")]
+    ////public async Task<IActionResult> SeedRoles()
+    ////{
+    ////    var seerRoles = await _authService.SeedRolesAsync();
 
-        return Ok(seerRoles);
-    }
+    ////    return Ok(seerRoles);
+    ////}
 
 
     // Route -> Register
-    [HttpPost]
-    [Route("register")]
+
+
+    [HttpPost("register")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
     {
         var registerResult = await _authService.RegisterAsync(registerDto);
@@ -43,6 +47,9 @@ public class AuthController : ControllerBase
     // Route -> Login
     [HttpPost]
     [Route("login")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
     {
         var loginResult = await _authService.LoginAsync(loginDto);
@@ -58,6 +65,9 @@ public class AuthController : ControllerBase
     // Route -> make user -> employer
     [HttpPost]
     [Route("make-employer")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> MakeEmployer([FromBody] UpdatePermissionDto updatePermissionDto)
     {
         var operationResult = await _authService.MakeEmployerAsync(updatePermissionDto);
@@ -71,6 +81,9 @@ public class AuthController : ControllerBase
     // Route -> make user -> admin
     [HttpPost]
     [Route("make-admin")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> MakeAdmin([FromBody] UpdatePermissionDto updatePermissionDto)
     {
         var operationResult = await _authService.MakeAdminAsync(updatePermissionDto);
@@ -80,13 +93,58 @@ public class AuthController : ControllerBase
 
         return BadRequest(operationResult);
     }
-
-    [HttpDelete]
-    [Route("logout")]
-    public async Task<IActionResult> Logout(User user)
+    [HttpDelete("delete-account")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> DeleteAccount(LoginDto deleteAccountUser)
     {
-        await _authService.Logout(user);
-        return Ok("User deleted seccessfully");
+        try
+        {
+            await _authService.DeleteAccountAsync(deleteAccountUser);
+            return Ok();
+        }
+        catch (CustomException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
     }
 
+    [HttpDelete("logout-account")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> Logout(LogoutUser deleteAccountUser)
+    {
+        try
+        {
+            await _authService.LogoutAsync(deleteAccountUser);
+            return Ok();
+        }
+        catch (CustomException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
+    }
 }
+

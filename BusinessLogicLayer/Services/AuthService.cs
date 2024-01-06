@@ -1,5 +1,6 @@
 ﻿
 
+using BusinessLogicLayer.Extended;
 using BusinessLogicLayer.Interfaces;
 using DataAcceseLayer.Entities;
 using DTOLayer;
@@ -62,8 +63,13 @@ public class AuthService(UserManager<User> userManager,
 
         return new AuthServiceResponseDto()
         {
+            UserId = user.Id,
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            PhoneNumber = user.PhoneNumber,
             IsSucceed = true,
-            Message = token
+            Message = token,
+            
         };
     }
     #endregion
@@ -230,15 +236,59 @@ public class AuthService(UserManager<User> userManager,
 
         return token;
     }
-
     #endregion
 
 
     #region Logout uchun
-
-    public async Task Logout(User user)
+    public async Task LogoutAsync(LogoutUser logoutUser)
     {
-        await _userManager.DeleteAsync(user);
+
+        if (logoutUser is null)
+        {
+            throw new ArgumentNullException(nameof(logoutUser));
+        }
+
+        var user = await _userManager.FindByNameAsync(logoutUser.PhoneNumber);
+        if (user is null)
+        {
+            throw new NotFoundException("User not found");
+        }
+
+        await RemoveAccessToken(user);
+    }
+
+
+    #endregion
+
+    #region Delete Account 
+    public async Task DeleteAccountAsync(LoginDto loginUser)
+    {
+        if (loginUser is null)
+        {
+            throw new ArgumentNullException(nameof(loginUser));
+        }
+
+        var user = await _userManager.FindByNameAsync(loginUser.PhoneNumber);
+        if (user is null)
+        {
+            throw new NotFoundException("User not found");
+        }
+
+        await RemoveAccessToken(user);
+        var result = await _userManager.DeleteAsync(user);
+        if (!result.Succeeded)
+        {
+            throw new CustomException($"User deletion failed:\n{result.Errors.ToErrorString()}");
+        }
     }
     #endregion
+    private async Task RemoveAccessToken(User user)
+    {
+        var result = await _userManager.RemoveAuthenticationTokenAsync(user, "Application", "AccessToken");
+        if (!result.Succeeded)
+        {
+            throw new CustomException($"Access token removal failed:\n{result.Errors.ToErrorString()}");
+        }
+    }
+
 }

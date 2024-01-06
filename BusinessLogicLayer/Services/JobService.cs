@@ -78,6 +78,7 @@ public class JobService(IUnitOfWork unitOfWork,
         await _unitOfWork.JobInterface.DeleteAsync(job);
         await _unitOfWork.SaveAsync();
     }
+
     #endregion
 
     #region Get All Jobs
@@ -152,4 +153,36 @@ public class JobService(IUnitOfWork unitOfWork,
         await _unitOfWork.SaveAsync();
     }
     #endregion
+
+
+    public async Task<PagedList<JobDto>> Filter(FilterParametrs parametrs)
+    {
+        var list = await _unitOfWork.JobInterface.GetAllAsync();
+        // Filter by title
+        if (parametrs.Title is not "")
+        {
+            list = list.Where(book => book.Title.ToLower()
+                .Contains(parametrs.Title.ToLower()));
+        }
+
+        // Filter by price
+        list = list.Where(job => job.SalaryMax >= parametrs.MinPrice &&
+                                          job.SalaryMin <= parametrs.MaxPrice);
+
+        var dtos = list.Select(job => _mapper.Map<JobDto>(job)).ToList();
+        // Order by title
+        if (parametrs.OrderByTitle)
+        {
+            dtos = dtos.OrderBy(book => book.Title).ToList();
+        }
+        else
+        {
+            dtos = dtos.OrderByDescending(job => job.SalaryMin).ToList();
+        }
+
+        PagedList<JobDto> pagedList = new(dtos, dtos.Count,
+                                          parametrs.PageNumber, parametrs.PageSize);
+
+        return pagedList.ToPagedList(dtos, parametrs.PageSize, parametrs.PageNumber);
+    }
 }

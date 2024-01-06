@@ -132,4 +132,20 @@ public class JobController(IJobService jobService) : ControllerBase
         }
     }
     #endregion
+
+
+    [HttpGet("filter")]
+    public async Task<IActionResult> Filter([FromQuery] FilterParametrs parametrs)
+    {
+        try
+        {
+            var books = await _jobService.Filter(parametrs);
+            return Ok(books);
+        }
+        catch (CustomException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+      
+    }
 }

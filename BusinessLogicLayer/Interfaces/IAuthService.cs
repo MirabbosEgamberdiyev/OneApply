@@ -12,5 +12,7 @@ public interface IAuthService
     Task<AuthServiceResponseDto> LoginAsync(LoginDto loginDto);
     Task<AuthServiceResponseDto> MakeEmployerAsync(UpdatePermissionDto updatePermissionDto);
     Task<AuthServiceResponseDto> MakeAdminAsync(UpdatePermissionDto updatePermissionDto);
-    Task Logout(User user);
+    Task LogoutAsync(LogoutUser logoutUser);
+    Task DeleteAccountAsync(LoginDto loginDto);
+
 }

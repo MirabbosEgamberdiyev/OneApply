@@ -1,10 +1,13 @@
 ﻿
+using BusinessLogicLayer.Extended;
 using DTOLayer.Dtos.VacanceDtos.JobDtos;
 
 namespace BusinessLogicLayer.Interfaces;
 
 public interface IJobService
 {
+    Task<PagedList<JobDto>> Filter(FilterParametrs parametrs);
+
     Task<List<JobDto>> GetAllAsync();
     Task<JobDto> GetByIdAsync(int id);
     Task AddAsync(AddJobDto dto);
