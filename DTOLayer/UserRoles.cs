@@ -1,12 +1,10 @@
 ﻿
 
-namespace DTOLayer
+namespace DTOLayer;
+
+public enum UserRoles
 {
-    public enum UserRoles
-    {
-        WORKER =1,
-        OWNER = 2,
-        ADMIN = 3,
-        
-    }
+    WORKER =1,
+    OWNER = 2,
+    ADMIN = 3,
 }

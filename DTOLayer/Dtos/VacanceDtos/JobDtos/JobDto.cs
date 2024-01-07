@@ -30,7 +30,7 @@ public class JobDto:BaseDto
     public string Description { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "UserId is required")]
-    public string UserId { get; set; }
+    public string UserId { get; set; } = string.Empty;
 
     public ICollection<ApplyDto> ApplyDtos { get; set; } = new List<ApplyDto>();
 }

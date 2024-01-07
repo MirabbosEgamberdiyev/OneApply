@@ -12,8 +12,8 @@ namespace OneApply.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = StaticUserRoles.Worker)]
-    [Authorize(Roles = StaticUserRoles.ADMIN)]
+    //[Authorize(Roles = StaticUserRoles.Worker)]
+    //[Authorize(Roles = StaticUserRoles.ADMIN)]
     public class WorkExperienceController(IWorkExperienceService workExperienceService) : ControllerBase
     {
         private readonly IWorkExperienceService _workExperienceService = workExperienceService;

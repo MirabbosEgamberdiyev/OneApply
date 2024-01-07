@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataAcceseLayer.Entities.Vacancies;
 
-public class Apply:BaseEntity
+public class Apply: BaseEntity
 {
- 
+
 
     [ForeignKey("Job")]
     [Column("JobId")]

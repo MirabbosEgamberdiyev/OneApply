@@ -52,6 +52,7 @@ public class AuthService(UserManager<User> userManager,
                 new Claim("JWTID", Guid.NewGuid().ToString()),
                 new Claim("FirstName", user.FirstName),
                 new Claim("LastName", user.LastName),
+                
             };
 
         foreach (var userRole in userRoles)
@@ -121,6 +122,20 @@ public class AuthService(UserManager<User> userManager,
     #region Register qilish uchun
     public async Task<AuthServiceResponseDto> RegisterAsync(RegisterDto registerDto)
     {
+        var FulNumber = registerDto.PhoneNumber;
+        var first = FulNumber[0];
+        var PhoneNumber = FulNumber.Remove(0, 1);
+
+        if (int.TryParse(PhoneNumber, out _))
+        {
+            return new AuthServiceResponseDto
+            {
+                IsSucceed = false,
+                Message = "Phone number raqam bo'lishi kerak "
+            };
+        }
+
+
         var existingUser = await _userManager.FindByNameAsync(registerDto.PhoneNumber);
 
         if (existingUser != null)
@@ -146,7 +161,7 @@ public class AuthService(UserManager<User> userManager,
 
         if (!createUserResult.Succeeded)
         {
-            var errorString = "PhoneNumber creation failed because: " + string.Join(" ", createUserResult.Errors.Select(e => e.Description));
+            var errorString = "User creation failed because: " + string.Join(" ", createUserResult.Errors.Select(e => e.Description));
 
             return new AuthServiceResponseDto
             {
@@ -155,11 +170,11 @@ public class AuthService(UserManager<User> userManager,
             };
         }
 
-
+        // Use the enum directly
         if (Enum.TryParse(registerDto.Roles.ToString(), true, out UserRoles userRole))
         {
-            // Add roles based on the parsed enum value
-            await _userManager.AddToRoleAsync(newUser, userRole.ToString());
+            string roleName = userRole.ToString();
+            await _userManager.AddToRoleAsync(newUser, roleName);
         }
         else
         {
@@ -169,7 +184,6 @@ public class AuthService(UserManager<User> userManager,
                 Message = $"Invalid role: {registerDto.Roles}"
             };
         }
-
 
         return new AuthServiceResponseDto
         {

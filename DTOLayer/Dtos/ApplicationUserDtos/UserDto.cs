@@ -5,6 +5,8 @@ using DTOLayer.Dtos.EducationDtos;
 using DTOLayer.Dtos.LinkDtos;
 using DTOLayer.Dtos.ProjectDtos;
 using DTOLayer.Dtos.SkillDtos;
+using DTOLayer.Dtos.VacanceDtos.ApplyDtos;
+using DTOLayer.Dtos.VacanceDtos.JobDtos;
 using DTOLayer.Dtos.WorkExperienceDtos;
 using System.ComponentModel.DataAnnotations;
 
@@ -40,6 +42,6 @@ public class UserDto
     public ICollection<SkillDto> SkillDtos { get; set; } = new List<SkillDto>();
     public ICollection<WorkExperienceDto> WorkExperienceDtos { get; set; } = new List<WorkExperienceDto>();
 
-    public ICollection<Apply> Applies { get; set; } = new List<Apply>();
-    public ICollection<Job> Jobs { get; set; } = new List<Job>();
+    public ICollection<ApplyDto> ApplyDtos { get; set; } = new List<ApplyDto>();
+    public ICollection<JobDto> JobDtos { get; set; } = new List<JobDto>();
 }

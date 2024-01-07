@@ -193,4 +193,14 @@ public class JobService(IUnitOfWork unitOfWork,
 
         return pagedList.ToPagedList(jobs, pageSize, pageNumber);
     }
+
+    public async Task<List<JobDto>> GetAllWithApplyAsync()
+    {
+        var jobs = await _unitOfWork.JobInterface.GetAllWithApplyAsync();
+
+        if (jobs == null || !jobs.Any())
+            throw new CustomException("No jobs found with applies");
+
+        return jobs.Select(c => _mapper.Map<JobDto>(c)).ToList();
+    }
 }

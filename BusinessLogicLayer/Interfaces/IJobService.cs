@@ -1,5 +1,6 @@
 ﻿
 using BusinessLogicLayer.Extended;
+using DataAcceseLayer.Entities.Enums;
 using DTOLayer.Dtos.VacanceDtos.JobDtos;
 
 namespace BusinessLogicLayer.Interfaces;
@@ -10,6 +11,7 @@ public interface IJobService
     Task<PagedList<JobDto>> GetAllPaged(int pageSize, int pageNumber);
 
 
+    Task<List<JobDto>> GetAllWithApplyAsync();
     Task<List<JobDto>> GetAllAsync();
     Task<JobDto> GetByIdAsync(int id);
     Task AddAsync(AddJobDto dto);

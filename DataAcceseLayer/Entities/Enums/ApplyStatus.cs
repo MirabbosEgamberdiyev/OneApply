@@ -4,7 +4,7 @@ namespace DataAcceseLayer.Entities.Enums;
 
 public enum ApplyStatus
 {
-    Applied,
+    Applied =1,
     Screening,
     Interview,
     Accepted,

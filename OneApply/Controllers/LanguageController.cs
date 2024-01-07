@@ -9,8 +9,8 @@ namespace OneApply.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize(Roles = StaticUserRoles.Worker)]
-[Authorize(Roles = StaticUserRoles.ADMIN)]
+//[Authorize(Roles = StaticUserRoles.Worker)]
+//[Authorize(Roles = StaticUserRoles.ADMIN)]
 public class LanguageController(ILanguageService languageService) : ControllerBase
 {
     private readonly ILanguageService _languageService = languageService;

@@ -21,18 +21,17 @@ public class AutoMapperProfile : Profile
     public AutoMapperProfile()
     {
         CreateMap<User, UserDto>()
-            .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.FirstName + " " + src.LastName))
-            .ForMember(dest => dest.WorkExperienceDtos, opt => opt.MapFrom(src => src.WorkExperiences))
-            .ForMember(dest => dest.CertificateDtos, opt => opt.MapFrom(src => src.Certificates))
-             // Add mappings for other properties as needed
+             .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.FirstName + " " + src.LastName))
+             .ForMember(dest => dest.WorkExperienceDtos, opt => opt.MapFrom(src => src.WorkExperiences))
+             .ForMember(dest => dest.CertificateDtos, opt => opt.MapFrom(src => src.Certificates))
              .ForMember(dest => dest.EducationDtos, opt => opt.MapFrom(src => src.Educations))
              .ForMember(dest => dest.LanguageDtos, opt => opt.MapFrom(src => src.Languages))
              .ForMember(dest => dest.LinkDtos, opt => opt.MapFrom(src => src.Links))
              .ForMember(dest => dest.ProjectDtos, opt => opt.MapFrom(src => src.Projects))
              .ForMember(dest => dest.SkillDtos, opt => opt.MapFrom(src => src.Skills))
-             .ForMember(dest => dest.Applies, opt => opt.MapFrom(src => src.Applies))
-             .ForMember(dest => dest.Jobs, opt => opt.MapFrom(src => src.Jobs))
-            .ReverseMap();
+             .ForMember(dest => dest.ApplyDtos, opt => opt.MapFrom(src => src.Applies))
+             .ForMember(dest => dest.JobDtos, opt => opt.MapFrom(src => src.Jobs))
+             .ReverseMap();
 
         CreateMap<AddUserDto, User>().ReverseMap();
 
@@ -74,12 +73,14 @@ public class AutoMapperProfile : Profile
         CreateMap<UpdateWorkExperienceDto, WorkExperience>();
 
         //Add apply 8
-        CreateMap<Apply, ApplyDto>().ReverseMap();
-        CreateMap<AddApplyDto, Apply>();
+        CreateMap<ApplyDto, Apply>().ReverseMap();
+        CreateMap<AddApplyDto, Apply>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore()); 
         CreateMap<UpdateApplyDto, Apply>();
 
-        //Update apply  9
-        CreateMap<Job, JobDto>().ReverseMap();
+        //Add apply  9
+        CreateMap<Job, JobDto>().ReverseMap()
+       .ForMember(dest => dest.Applies, opt => opt.MapFrom(src => src.ApplyDtos));
         CreateMap<AddJobDto, Job>();
         CreateMap<UpdateJobDto, Job>();
 

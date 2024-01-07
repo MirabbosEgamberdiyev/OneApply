@@ -4,7 +4,7 @@ namespace DataAcceseLayer.Entities.Enums;
 
 public enum LinkType
 {
-    GitHub,
+    GitHub = 1,
     LinkedIn,
     Telegram,
     Facebook,

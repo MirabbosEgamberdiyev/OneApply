@@ -167,6 +167,43 @@ public static  class Startup
 
 
     }
+    public static async void SeedRolesToDatabase(this IApplicationBuilder app)
+    {
+        var scope = app.ApplicationServices.CreateScope();
+        var roleManager = scope.ServiceProvider
+                                .GetRequiredService<RoleManager<IdentityRole>>();
+        if (!roleManager.Roles.Any())
+        {
+            var roles = new List<IdentityRole>
+            {
+                new IdentityRole{Name = "WORKER"},
+                new IdentityRole{Name = "OWNER"},
+                new IdentityRole{Name = "ADMIN"}
+            };
+            foreach (var role in roles)
+            {
+                roleManager.CreateAsync(role).Wait();
+            }
+        }
+
+        var userManager = scope.ServiceProvider
+                                .GetRequiredService<UserManager<User>>();
+        var user = new User()
+        {
+            FirstName = "Mirabbos",
+            LastName = "Egamberdiyev",
+            PhoneNumber = "+998889996499",
+            UserName = "+998889996499",
+            PhoneNumberConfirmed = true
+        };
+        var userExist = await userManager.FindByNameAsync(user.UserName);
+        if (userExist == null)
+        {
+            await userManager.CreateAsync(user, "Admin.123$");
+            await userManager.AddToRoleAsync(user, "ADMIN");
+        }
+    }
+
     public static void AddMiddleware(this WebApplication app)
     {
 

@@ -10,8 +10,8 @@ namespace OneApply.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize(Roles = StaticUserRoles.Worker)]
-[Authorize(Roles = StaticUserRoles.ADMIN)]
+//[Authorize(Roles = StaticUserRoles.Worker)]
+//[Authorize(Roles = StaticUserRoles.ADMIN)]
 public class EducationController(IEducationService educationService) : ControllerBase
 {
     private readonly IEducationService _educationService = educationService;
