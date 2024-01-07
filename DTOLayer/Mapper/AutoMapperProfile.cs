@@ -73,9 +73,8 @@ public class AutoMapperProfile : Profile
         CreateMap<UpdateWorkExperienceDto, WorkExperience>();
 
         //Add apply 8
-        CreateMap<ApplyDto, Apply>().ReverseMap();
-        CreateMap<AddApplyDto, Apply>()
-            .ForMember(dest => dest.Id, opt => opt.Ignore()); 
+        CreateMap<Apply, ApplyDto>().ReverseMap();
+        CreateMap<AddApplyDto, Apply>();
         CreateMap<UpdateApplyDto, Apply>();
 
         //Add apply  9

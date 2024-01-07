@@ -177,7 +177,7 @@ public static  class Startup
             var roles = new List<IdentityRole>
             {
                 new IdentityRole{Name = "WORKER"},
-                new IdentityRole{Name = "OWNER"},
+                new IdentityRole{Name = "EMPLOYER"},
                 new IdentityRole{Name = "ADMIN"}
             };
             foreach (var role in roles)

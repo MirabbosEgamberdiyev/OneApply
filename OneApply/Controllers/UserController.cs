@@ -17,7 +17,6 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("get-all-user")]
-
     public async Task<IActionResult> GetAllAsync()
     {
         try
@@ -27,11 +26,24 @@ public class UserController : ControllerBase
         }
         catch (Exception)
         {
-            // Log the exception or handle it as needed
             return StatusCode(500, "Internal Server Error");
         }
     }
 
+    [HttpGet("get-by-id-user")]
+    public async Task<IActionResult> GetByIdAsync(string id)
+    {
+        try
+        {
+            var result = await _userService.GetByIdAsync(id);
+            return Ok(result);
+        }
+        catch (Exception)
+        {
+            return StatusCode(500, "Internal Server Error");
+
+        }
+    }
 
     [HttpPost("add-user")]
     public async Task<IActionResult> AddAsync(AddUserDto userDto)

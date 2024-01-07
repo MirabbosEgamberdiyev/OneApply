@@ -1,6 +1,8 @@
 ﻿using BusinessLogicLayer.Extended;
 using BusinessLogicLayer.Interfaces;
+using BusinessLogicLayer.Roles;
 using DTOLayer.Dtos.VacanceDtos.ApplyDtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -8,8 +10,7 @@ namespace OneApply.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-//[Authorize(Roles = StaticUserRoles.OWNER)]
-//[Authorize(Roles = StaticUserRoles.ADMIN)]
+[Authorize(Roles = StaticUserRoles.ADMIN + "," + StaticUserRoles.EMPLOYER)]
 public class ApplyController(IApplyService applyService) : ControllerBase
 {
     private readonly IApplyService _applyService = applyService;

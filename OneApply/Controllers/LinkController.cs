@@ -1,5 +1,6 @@
 ﻿using BusinessLogicLayer.Extended;
 using BusinessLogicLayer.Interfaces;
+using BusinessLogicLayer.Roles;
 using DTOLayer;
 using DTOLayer.Dtos.LinkDtos;
 using Microsoft.AspNetCore.Authorization;
@@ -12,8 +13,8 @@ namespace OneApply.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize(Roles = StaticUserRoles.Worker)]
-    //[Authorize(Roles = StaticUserRoles.ADMIN)]
+    [Authorize(Roles = StaticUserRoles.ADMIN + "," + StaticUserRoles.WORKER)]
+
     public class LinkController(ILinkService linkService) : ControllerBase
     {
         private readonly ILinkService _linkService = linkService;

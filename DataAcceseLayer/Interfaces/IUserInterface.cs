@@ -8,6 +8,8 @@ public interface IUserInterface
 {
     Task<IEnumerable<User>> GetAllAsync();
 
+    Task<User> GetByIdAsync(string id);
+
     Task<IEnumerable<User>> GetCertificateAsync();
     Task<IEnumerable<User>> GetEducationAsync();
 

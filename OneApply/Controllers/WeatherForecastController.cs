@@ -1,3 +1,4 @@
+using BusinessLogicLayer.Roles;
 using DTOLayer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,7 +16,7 @@ namespace OneApply.Controllers
 
         [HttpGet]
         [Route("Get")]
-        [Authorize(Roles = StaticUserRoles.OWNER)]
+        [Authorize(Roles = StaticUserRoles.EMPLOYER)]
         public IActionResult Get()
         {
             return Ok(Summaries);
@@ -23,7 +24,7 @@ namespace OneApply.Controllers
 
         [HttpGet]
         [Route("GetWorkerRole")]
-        [Authorize(Roles = StaticUserRoles.Worker)]
+        [Authorize(Roles = StaticUserRoles.WORKER)]
         public IActionResult GetWorkerRole()
         {
             return Ok(Summaries);
@@ -31,7 +32,7 @@ namespace OneApply.Controllers
 
         [HttpGet]
         [Route("GetEmployerRole")]
-        [Authorize(Roles = StaticUserRoles.OWNER)]
+        [Authorize(Roles = StaticUserRoles.EMPLOYER)]
         public IActionResult GetEmployerRole()
         {
             return Ok(Summaries);

@@ -10,6 +10,7 @@ public interface IUserService
     Task AddUser(AddUserDto userDto);
 
     Task<List<UserDto>> GetAllAsync();
+    Task<UserDto> GetByIdAsync(string id);
     Task<List<UserDto>> GetCertificateAsync();
     Task<List<UserDto>> GetEducationAsync();
 

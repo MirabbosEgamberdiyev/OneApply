@@ -2,6 +2,7 @@
 
 using BusinessLogicLayer.Extended;
 using BusinessLogicLayer.Interfaces;
+using BusinessLogicLayer.Roles;
 using DataAcceseLayer.Entities;
 using DTOLayer;
 using DTOLayer.Dtos.ApplicationUserDtos;
@@ -87,7 +88,7 @@ public class AuthService(UserManager<User> userManager,
                 Message = "Invalid User name!!!!!!!!"
             };
 
-        await _userManager.AddToRoleAsync(user, StaticUserRoles.OWNER);
+        await _userManager.AddToRoleAsync(user, StaticUserRoles.EMPLOYER);
 
         return new AuthServiceResponseDto()
         {
@@ -198,8 +199,8 @@ public class AuthService(UserManager<User> userManager,
     public async Task<AuthServiceResponseDto> SeedRolesAsync()
     {
         bool isAdminRoleExists = await _roleManager.RoleExistsAsync(StaticUserRoles.ADMIN);
-        bool isEmployerRoleExists = await _roleManager.RoleExistsAsync(StaticUserRoles.OWNER);
-        bool isWorkerRoleExists = await _roleManager.RoleExistsAsync(StaticUserRoles.Worker);
+        bool isEmployerRoleExists = await _roleManager.RoleExistsAsync(StaticUserRoles.EMPLOYER);
+        bool isWorkerRoleExists = await _roleManager.RoleExistsAsync(StaticUserRoles.WORKER);
 
         if (isAdminRoleExists && isEmployerRoleExists && isWorkerRoleExists)
             return new AuthServiceResponseDto()
@@ -216,12 +217,12 @@ public class AuthService(UserManager<User> userManager,
 
         if (!isEmployerRoleExists)
         {
-            await _roleManager.CreateAsync(new IdentityRole(StaticUserRoles.OWNER));
+            await _roleManager.CreateAsync(new IdentityRole(StaticUserRoles.EMPLOYER));
         }
 
         if (!isWorkerRoleExists)
         {
-            await _roleManager.CreateAsync(new IdentityRole(StaticUserRoles.Worker));
+            await _roleManager.CreateAsync(new IdentityRole(StaticUserRoles.WORKER));
         }
 
         return new AuthServiceResponseDto()
@@ -241,7 +242,7 @@ public class AuthService(UserManager<User> userManager,
         var tokenObject = new JwtSecurityToken(
                 issuer: _configuration["JWT:ValidIssuer"],
                 audience: _configuration["JWT:ValidAudience"],
-                expires: DateTime.Now.AddDays(1),
+                expires: DateTime.Now.AddDays(7),
                 claims: claims,
                 signingCredentials: new SigningCredentials(authSecret, SecurityAlgorithms.HmacSha256)
             );

@@ -1,5 +1,6 @@
 ﻿using BusinessLogicLayer.Extended;
 using BusinessLogicLayer.Interfaces;
+using BusinessLogicLayer.Roles;
 using DTOLayer;
 using DTOLayer.Dtos.EducationDtos;
 using Microsoft.AspNetCore.Authorization;
@@ -10,8 +11,8 @@ namespace OneApply.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-//[Authorize(Roles = StaticUserRoles.Worker)]
-//[Authorize(Roles = StaticUserRoles.ADMIN)]
+[Authorize(Roles = StaticUserRoles.ADMIN + "," + StaticUserRoles.WORKER)]
+
 public class EducationController(IEducationService educationService) : ControllerBase
 {
     private readonly IEducationService _educationService = educationService;

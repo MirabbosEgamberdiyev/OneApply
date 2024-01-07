@@ -31,6 +31,25 @@ public class UserRepository(ApplicationDbContext dbContext ) : IUserInterface
             .Include(u => u.WorkExperiences)
             .ToListAsync();
     }
+
+    public async Task<User> GetByIdAsync(string id)
+    {
+#pragma warning disable CS8603 // Possible null reference return.
+        return await _dbContext.Users
+            .Include(u => u.Applies)
+            .Include(u => u.Certificates)
+            .Include(u => u.Educations)
+            .Include(u => u.Jobs)
+            .Include(u => u.Languages)
+            .Include(u => u.Links)
+            .Include(u => u.Projects)
+            .Include(u => u.Skills)
+            .Include(u => u.WorkExperiences)
+            .FirstOrDefaultAsync(i => i.Id.Equals(id));
+#pragma warning restore CS8603 // Possible null reference return.
+    }
+
+
     #region Hozircha kerak emas
 
     public async Task<IEnumerable<User>> GetApplyAsync()

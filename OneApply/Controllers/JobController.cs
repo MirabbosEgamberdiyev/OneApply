@@ -1,5 +1,6 @@
 ﻿using BusinessLogicLayer.Extended;
 using BusinessLogicLayer.Interfaces;
+using BusinessLogicLayer.Roles;
 using DTOLayer;
 using DTOLayer.Dtos.VacanceDtos.JobDtos;
 using Microsoft.AspNetCore.Authorization;
@@ -10,8 +11,8 @@ namespace OneApply.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-//[Authorize(Roles = StaticUserRoles.OWNER)]
-//[Authorize(Roles = StaticUserRoles.ADMIN)]
+[Authorize(Roles = StaticUserRoles.ADMIN + "," + StaticUserRoles.EMPLOYER)]
+
 public class JobController(IJobService jobService) : ControllerBase
 {
     private readonly IJobService _jobService = jobService;

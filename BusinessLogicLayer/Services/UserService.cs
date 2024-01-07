@@ -39,12 +39,19 @@ public class UserService(IUnitOfWork unitOfWork, IMapper mapper, UserManager<Use
         var user = await _unitOfWork.UserInterface.GetAllAsync();
         return user.Select(u => _mapper.Map<UserDto>(u)).ToList();
     }
+    public async Task<UserDto> GetByIdAsync(string id)
+    {
+        var user = await _unitOfWork.UserInterface.GetByIdAsync(id);
+        return _mapper.Map<UserDto>(user);
+    }
     #region Hozircha kerak emas
     public async Task<List<UserDto>> GetApplyAsync()
     {
         var Applies = await _unitOfWork.UserInterface.GetApplyAsync();
         return Applies.Select(a => _mapper.Map<UserDto>(a)).ToList();   
     }
+
+
 
     public async Task<List<UserDto>> GetCertificateAsync()
     {
