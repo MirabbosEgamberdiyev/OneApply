@@ -207,11 +207,9 @@ public static  class Startup
     public static void AddMiddleware(this WebApplication app)
     {
 
-        if (app.Environment.IsDevelopment())
-        {
-            app.UseSwagger();
-            app.UseSwaggerUI();
-        }
+        app.UseSwagger();
+        app.UseSwaggerUI();
+        
         app.UseCors(CORS_POLICY);
         app.UseHttpsRedirection();
         app.UseAuthentication();
