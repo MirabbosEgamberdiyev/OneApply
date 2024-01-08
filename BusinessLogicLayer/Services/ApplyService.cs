@@ -30,6 +30,9 @@ public class ApplyService(IUnitOfWork unitOfWork,
 
         var apply = _mapper.Map<Apply>(dto);
 
+
+
+
         if (apply is null)
         {
             throw new ArgumentNullException("Mapped Apply is null");

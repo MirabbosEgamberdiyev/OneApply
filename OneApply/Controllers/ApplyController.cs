@@ -10,7 +10,7 @@ namespace OneApply.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize(Roles = StaticUserRoles.ADMIN + "," + StaticUserRoles.EMPLOYER)]
+//[Authorize(Roles = StaticUserRoles.ADMIN + "," + StaticUserRoles.EMPLOYER)]
 public class ApplyController(IApplyService applyService) : ControllerBase
 {
     private readonly IApplyService _applyService = applyService;
@@ -77,9 +77,9 @@ public class ApplyController(IApplyService applyService) : ControllerBase
         {
             return BadRequest(ex.ErrorMessage);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         }
     }
     #endregion
