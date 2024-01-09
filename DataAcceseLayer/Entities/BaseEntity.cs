@@ -6,6 +6,6 @@ namespace DataAcceseLayer.Entities;
 
 public class BaseEntity
 {
-    [Required, Key]
+    [Key, Required]
     public int Id { get; set; }
 }

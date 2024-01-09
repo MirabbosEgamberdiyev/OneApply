@@ -127,7 +127,7 @@ public class AuthService(UserManager<User> userManager,
         var first = FulNumber[0];
         var PhoneNumber = FulNumber.Remove(0, 1);
 
-        if (int.TryParse(PhoneNumber, out _))
+        if (!double.TryParse(PhoneNumber, out _))
         {
             return new AuthServiceResponseDto
             {
@@ -171,7 +171,6 @@ public class AuthService(UserManager<User> userManager,
             };
         }
 
-        // Use the enum directly
         if (Enum.TryParse(registerDto.Roles.ToString(), true, out UserRoles userRole))
         {
             string roleName = userRole.ToString();

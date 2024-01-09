@@ -36,6 +36,26 @@ public class ApplyController(IApplyService applyService) : ControllerBase
     }
     #endregion
 
+    #region Get All Applies
+    [HttpGet("getAllJobsByUserId")]
+    public async Task<IActionResult> GetAllByUserIdAsync(string userId)
+    {
+        try
+        {
+            var jobs = await _applyService.GetAllJobByUserId(userId);
+            return Ok(jobs);
+        }
+        catch (CustomException ex)
+        {
+            return NotFound(ex.ErrorMessage);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
+    }
+    #endregion
+
     #region Get Apply by Id
     [HttpGet("getByIdApply/{id}")]
     public async Task<IActionResult> GetByIdAsync(int id)

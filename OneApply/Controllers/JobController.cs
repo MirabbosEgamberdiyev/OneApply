@@ -36,8 +36,25 @@ public class JobController(IJobService jobService) : ControllerBase
         }
     }
     #endregion
-
-
+    #region Get All Jobs
+    [HttpGet("get-By-userId-Job")]
+    public async Task<IActionResult> GetByUserIdAsync(string UserId)
+    {
+        try
+        {
+            var job = await _jobService.GetByUserId(UserId);
+            return Ok(job);
+        }
+        catch (CustomException ex)
+        {
+            return NotFound(ex.ErrorMessage);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
+    }
+    #endregion
 
     #region Get All Jobs
     [HttpGet("getAllJobsWithApply")]
@@ -156,7 +173,7 @@ public class JobController(IJobService jobService) : ControllerBase
     #endregion
 
     #region Filterlash uchun
-    [HttpGet("filter")]
+    [HttpGet("all-filter")]
     public async Task<IActionResult> Filter([FromQuery] FilterParametrs parametrs)
     {
         try
@@ -169,6 +186,21 @@ public class JobController(IJobService jobService) : ControllerBase
             return BadRequest(ex.Message);
         }
       
+    }
+
+    [HttpGet("filterbyTitel")]
+    public async Task<IActionResult> Filter([FromQuery] FilterJob filterJob)
+    {
+        try
+        {
+            var books = await _jobService.Filter(filterJob);
+            return Ok(books);
+        }
+        catch (CustomException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+
     }
     #endregion
 

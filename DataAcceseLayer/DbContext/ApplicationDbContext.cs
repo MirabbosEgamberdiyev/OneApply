@@ -39,8 +39,7 @@ public class ApplicationDbContext : IdentityDbContext<User>
         modelBuilder.Entity<Certificate>()
             .HasOne(c => c.User)
             .WithMany(u => u.Certificates)
-            .HasForeignKey(c => c.UserId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .HasForeignKey(c => c.UserId);
 
         modelBuilder.Entity<Skill>()
             .Property(s => s.Name)
@@ -50,8 +49,7 @@ public class ApplicationDbContext : IdentityDbContext<User>
         modelBuilder.Entity<Skill>()
             .HasOne(s => s.User)
             .WithMany(u => u.Skills)
-            .HasForeignKey(s => s.UserId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .HasForeignKey(s => s.UserId);
 
         modelBuilder.Entity<Education>()
             .Property(e => e.Name)
@@ -65,8 +63,7 @@ public class ApplicationDbContext : IdentityDbContext<User>
         modelBuilder.Entity<Education>()
             .HasOne(e => e.User)
             .WithMany(u => u.Educations)
-            .HasForeignKey(e => e.UserId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .HasForeignKey(e => e.UserId);
 
         modelBuilder.Entity<Language>()
             .Property(l => l.Name)
@@ -76,8 +73,7 @@ public class ApplicationDbContext : IdentityDbContext<User>
         modelBuilder.Entity<Language>()
             .HasOne(l => l.User)
             .WithMany(u => u.Languages)
-            .HasForeignKey(l => l.UserId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .HasForeignKey(l => l.UserId);
 
         modelBuilder.Entity<Link>()
             .Property(l => l.Url)
@@ -87,9 +83,7 @@ public class ApplicationDbContext : IdentityDbContext<User>
         modelBuilder.Entity<Link>()
             .HasOne(l => l.User)
             .WithMany(u => u.Links)
-            .HasForeignKey(l => l.UserId)
-            .OnDelete(DeleteBehavior.Cascade);
-
+            .HasForeignKey(l => l.UserId);
         modelBuilder.Entity<Project>()
             .Property(p => p.Name)
             .IsRequired()
@@ -103,8 +97,7 @@ public class ApplicationDbContext : IdentityDbContext<User>
         modelBuilder.Entity<Project>()
             .HasOne(p => p.User)
             .WithMany(u => u.Projects)
-            .HasForeignKey(p => p.UserId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .HasForeignKey(p => p.UserId);
 
         modelBuilder.Entity<Skill>()
             .Property(s => s.Name)
@@ -114,8 +107,7 @@ public class ApplicationDbContext : IdentityDbContext<User>
         modelBuilder.Entity<Skill>()
             .HasOne(s => s.User)
             .WithMany(u => u.Skills)
-            .HasForeignKey(s => s.UserId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .HasForeignKey(s => s.UserId);
 
         modelBuilder.Entity<WorkExperience>()
             .Property(w => w.CompanyName)
@@ -140,23 +132,17 @@ public class ApplicationDbContext : IdentityDbContext<User>
         modelBuilder.Entity<WorkExperience>()
             .HasOne(w => w.User)
             .WithMany(u => u.WorkExperiences)
-            .HasForeignKey(w => w.UserId)
-            .OnDelete(DeleteBehavior.Cascade);
-
-        modelBuilder.Entity<Apply>()
-            .HasKey(a => new { a.JobId, a.UserId });
+            .HasForeignKey(w => w.UserId);
 
         modelBuilder.Entity<Apply>()
             .HasOne(a => a.Job)
             .WithMany(j => j.Applies)
-            .HasForeignKey(a => a.JobId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .HasForeignKey(a => a.JobId);
 
         modelBuilder.Entity<Apply>()
             .HasOne(a => a.User)
             .WithMany(u => u.Applies)
-            .HasForeignKey(a => a.UserId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .HasForeignKey(a => a.UserId);
 
         modelBuilder.Entity<Job>()
             .Property(j => j.Title)
@@ -174,7 +160,12 @@ public class ApplicationDbContext : IdentityDbContext<User>
         modelBuilder.Entity<Job>()
             .HasOne(j => j.User)
             .WithMany(u => u.Jobs)
-            .HasForeignKey(j => j.UserId)
+            .HasForeignKey(j => j.UserId);
+
+        modelBuilder.Entity<Apply>()
+            .HasOne(a => a.Job)
+            .WithMany(j => j.Applies)
+            .HasForeignKey(a => a.JobId)
             .OnDelete(DeleteBehavior.Cascade);
 
 

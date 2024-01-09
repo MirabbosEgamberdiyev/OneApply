@@ -78,8 +78,9 @@ public class AutoMapperProfile : Profile
         CreateMap<UpdateApplyDto, Apply>();
 
         //Add apply  9
-        CreateMap<Job, JobDto>().ReverseMap()
-       .ForMember(dest => dest.Applies, opt => opt.MapFrom(src => src.ApplyDtos));
+        CreateMap<Job, JobDto>().ReverseMap();
+        CreateMap<Job, JobDto>()
+             .ForMember(dest => dest.ApplyDtos, opt => opt.MapFrom(src => src.Applies));
         CreateMap<AddJobDto, Job>();
         CreateMap<UpdateJobDto, Job>();
 

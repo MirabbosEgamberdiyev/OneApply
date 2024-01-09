@@ -6,6 +6,7 @@ using DataAcceseLayer.Entities;
 using DataAcceseLayer.Entities.Vacancies;
 using DataAcceseLayer.Interfaces;
 using DTOLayer.Dtos.VacanceDtos.ApplyDtos;
+using DTOLayer.Dtos.VacanceDtos.JobDtos;
 using Microsoft.AspNetCore.Identity;
 
 
@@ -29,9 +30,6 @@ public class ApplyService(IUnitOfWork unitOfWork,
         }
 
         var apply = _mapper.Map<Apply>(dto);
-
-
-
 
         if (apply is null)
         {
@@ -57,10 +55,15 @@ public class ApplyService(IUnitOfWork unitOfWork,
         var applies = await _unitOfWork.ApplyInterface.GetAllAsync();
 
         var job = await _unitOfWork.JobInterface.GetByIdAsync(dto.JobId);
-        if(job is null)
+        if (job is null)
         {
             throw new CustomException("JobId is not found");
         }
+        if (job.UserId == dto.UserId)
+        {
+            throw new CustomException("Ish beruvchi va ishchining id raqami bir hil bo'lmasligi kerak");
+        }
+
 
         if (!apply.IsValid())
         {
@@ -102,6 +105,8 @@ public class ApplyService(IUnitOfWork unitOfWork,
 
         return applies.Select(c => _mapper.Map<ApplyDto>(c)).ToList();
     }
+
+
     #endregion
 
     #region Get Apply by Id
@@ -165,4 +170,16 @@ public class ApplyService(IUnitOfWork unitOfWork,
         await _unitOfWork.SaveAsync();
     }
     #endregion
+
+
+    public async Task<List<JobDto>> GetAllJobByUserId(string userId)
+    {
+        if (userId == null) throw new ArgumentNullException("UserId is null");
+
+        var jobs = await _unitOfWork.JobInterface.GetAllAsync();
+
+        var filteredJobs = jobs.Where(c => c.UserId == userId).ToList();
+
+        return filteredJobs.Select(c => _mapper.Map<JobDto>(c)).ToList();
+    }
 }

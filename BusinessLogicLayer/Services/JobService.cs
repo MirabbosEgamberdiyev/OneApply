@@ -2,10 +2,13 @@
 using BusinessLogicLayer.Extended;
 using BusinessLogicLayer.Interfaces;
 using DataAcceseLayer.Entities;
+using DataAcceseLayer.Entities.Enums;
 using DataAcceseLayer.Entities.Vacancies;
 using DataAcceseLayer.Interfaces;
 using DTOLayer.Dtos.VacanceDtos.JobDtos;
 using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
+using System.Reflection.Metadata;
 
 namespace BusinessLogicLayer.Services;
 
@@ -96,7 +99,9 @@ public class JobService(IUnitOfWork unitOfWork,
     #region Get Job by Id
     public async Task<JobDto> GetByIdAsync(int id)
     {
-        var job = await _unitOfWork.JobInterface.GetByIdAsync(id);
+        //var job = await _unitOfWork.JobInterface.GetByIdAsync(id);
+        var jobs = await _unitOfWork.JobInterface.GetAllWithApplyAsync();
+        var job = jobs.FirstOrDefault(j => j.Id==id);
 
         if (job is null)
             throw new CustomException("Job is null");
@@ -158,19 +163,16 @@ public class JobService(IUnitOfWork unitOfWork,
     public async Task<PagedList<JobDto>> Filter(FilterParametrs parametrs)
     {
         var list = await _unitOfWork.JobInterface.GetAllAsync();
-        // Filter by title
         if (parametrs.Title is not "")
         {
             list = list.Where(book => book.Title.ToLower()
                 .Contains(parametrs.Title.ToLower()));
         }
 
-        // Filter by price
         list = list.Where(job => job.SalaryMax >= parametrs.MinPrice &&
                                           job.SalaryMin <= parametrs.MaxPrice);
 
         var dtos = list.Select(job => _mapper.Map<JobDto>(job)).ToList();
-        // Order by title
         if (parametrs.OrderByTitle)
         {
             dtos = dtos.OrderBy(book => book.Title).ToList();
@@ -202,5 +204,40 @@ public class JobService(IUnitOfWork unitOfWork,
             throw new CustomException("No jobs found with applies");
 
         return jobs.Select(c => _mapper.Map<JobDto>(c)).ToList();
+    }
+
+    public async Task<List<JobDto>> GetByUserId(string UserId)
+    {
+        if (UserId == null) throw new ArgumentNullException("UserId is null");
+
+        var jobs = await _unitOfWork.JobInterface.GetAllWithApplyAsync();
+
+        var filteredJobs = jobs.Where(c => c.UserId == UserId).ToList();
+
+        return filteredJobs.Select(c => _mapper.Map<JobDto>(c)).ToList();
+    }
+
+
+    public async Task<List<JobDto>> Filter(FilterJob filterJob)
+    {
+        var jobs = await _unitOfWork.JobInterface.GetAllAsync();
+
+        if (!string.IsNullOrEmpty(filterJob.Title))
+        {
+            jobs = jobs.Where(job => job.Title.ToLower().Contains(filterJob.Title.ToLower()));
+        }
+
+        if (filterJob.EmploymentType > 0)
+        {
+            jobs = jobs.Where(job => job.EmploymentType == (EmploymentType)filterJob.EmploymentType);
+        }
+
+        if (!string.IsNullOrEmpty(filterJob.Location))
+        {
+            jobs = jobs.Where(job => job.Location.ToLower().Contains(filterJob.Location.ToLower()));
+        }
+
+        var dtos = jobs.Select(job => _mapper.Map<JobDto>(job)).ToList();
+        return dtos;
     }
 }

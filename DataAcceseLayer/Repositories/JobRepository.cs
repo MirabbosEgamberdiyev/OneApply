@@ -18,6 +18,9 @@ public class JobRepository : Repository<Job>, IJobInterface
 
     public async Task<IEnumerable<Job>> GetAllWithApplyAsync()
     {
-        return await _dbContext.Jobs.Include(a => a.Applies).ToListAsync();
+        var jobs = await _dbContext.Jobs.Include(a => a.Applies).ToListAsync();
+        return jobs;
     }
+
+
 }
