@@ -1,8 +1,10 @@
 ﻿
 
+using DataAcceseLayer.Entities;
+
 namespace DataAcceseLayer.Interfaces;
 
-public interface IRepository<TEntity> where TEntity : class
+public interface IRepository<TEntity> where TEntity : BaseEntity
 {
     Task<IQueryable<TEntity>> GetAllAsync();
     Task<TEntity> GetByIdAsync(int id);
