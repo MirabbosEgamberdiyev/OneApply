@@ -99,7 +99,6 @@ public class JobService(IUnitOfWork unitOfWork,
     #region Get Job by Id
     public async Task<JobDto> GetByIdAsync(int id)
     {
-        //var job = await _unitOfWork.JobInterface.GetByIdAsync(id);
         var jobs = await _unitOfWork.JobInterface.GetAllWithApplyAsync();
         var job = jobs.FirstOrDefault(j => j.Id==id);
 
